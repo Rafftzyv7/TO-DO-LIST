@@ -1,70 +1,124 @@
 body {
-    background-image: url('rimuru.svg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    font-family: Arial, Helvetica, sans-serif;
+  background-image: url('rimuru.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: "Poppins", Arial, sans-serif;
+  cursor: crosshair;
+  overflow-x: hidden;
 }
 
 .todo-wrapper {
-    margin-top: 50px;
-    background-color: white;
-    border-radius: 15px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 25px;
-    font-weight: 250px;
+  margin-top: 60px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  width: 380px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  padding: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 }
 
 .todo-wrapper h2 {
-    margin: 0;
+  margin: 0;
+  color: #333;
 }
 
 .todo-wrapper p {
-    font-style: italic;
-    color: aqua;
-    margin: 5px 0;
+  font-style: italic;
+  color: #0099ff;
+  margin: 5px 0 15px 0;
 }
 
-.todo-wrapper ol {
-    margin: 20px 0;
+#todo-entry-box {
+  width: 70%;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
 }
 
-
-.todo-wrapper ol li {
-    margin: 5px 0;
-    padding: 3px;
-    transition: all 0.5s ease-out;
+#todo-entry-box:focus {
+  border-color: #ffcc00;
+  box-shadow: 0 0 5px #ffcc00;
 }
 
-.todo-wrapper ol li.completed {
-    text-decoration: line-through;
-    opacity: 0.5;
-    color: gray;
-}
-.todo-wrapper form {
-    display: inline-block;
-}
-
-.todo-wrapper input {
-    padding: 3px 5px;
+.pretty-button {
+  margin: 10px 4px;
+  color: white;
+  background-color: #ffcf54;
+  border-radius: 15px;
+  padding: 6px 16px;
+  border: none;
+  transition: 0.3s;
+  font-weight: bold;
 }
 
-
-.todo-wrapper  .pretty-button:hover{
-    cursor: pointer;
-    opacity: 0.8;
+.pretty-button:hover {
+  cursor: pointer;
+  background-color: #ffaa00;
+  transform: scale(1.05);
 }
 
-.todo-wrapper .pretty-button{
-    margin: 10px 2px;
-    color: white;
-    background-color: rgb(255, 207, 84);
-    border-radius: 15px;
-    padding: 5px 20px;
-    border: none;
-    text-align: center;
-    display: inline-block;
-    font-size: small;
+ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+  text-align: left;
+}
+
+li {
+  position: relative;
+  margin: 8px 0;
+  padding: 6px 35px 6px 10px;
+  background-color: #fffbe6;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+li.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+  color: gray;
+}
+
+li:hover {
+  transform: scale(1.03);
+  background-color: #fffae0;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  background: none;
+  border: none;
+  color: #ff4444;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  transform: scale(1.3);
+}
+
+/* Efek klik petasan putih */
+.click-spark {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  pointer-events: none;
+  animation: spark 0.5s ease-out forwards;
+  mix-blend-mode: difference;
+}
+
+@keyframes spark {
+  0% { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(5); opacity: 0; }
 }
