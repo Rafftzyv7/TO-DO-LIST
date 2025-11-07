@@ -1,92 +1,85 @@
 var addButton = document.getElementById("add-button");
-addButton.addEventListener("click", addToDoItem);
-function addToDoItem() {
-    alert("Add button clicked!");
-}
-
 var toDoEntryBox = document.getElementById("todo-entry-box");
 var toDoList = document.getElementById("todo-list");
 
+addButton.addEventListener("click", addToDoItem);
+document.addEventListener("click", createClickSpark); // efek petasan klik
+
 function newToDoItem(itemText, completed) {
-    var toDoItem = document.createElement("li");
-    var toDoText = document.createTextNode(itemText);
-    toDoItem.appendChild(toDoText);
+  var toDoItem = document.createElement("li");
+  var toDoText = document.createTextNode(itemText);
+  toDoItem.appendChild(toDoText);
 
-    if (completed) {
-        toDoItem.classList.add("completed");
-    }
+  // Tombol hapus
+  var deleteBtn = document.createElement("button");
+  deleteBtn.innerHTML = "❌";
+  deleteBtn.className = "delete-btn";
+  deleteBtn.onclick = function () {
+    toDoItem.remove();
+    saveList();
+  };
+  toDoItem.appendChild(deleteBtn);
 
-    toDoList.appendChild(toDoItem);
-    toDoItem.addEventListener("dblclick", toggleToDoItemState);
+  if (completed) {
+    toDoItem.classList.add("completed");
+  }
+
+  toDoList.appendChild(toDoItem);
+  toDoItem.addEventListener("dblclick", toggleToDoItemState);
 }
 
 function addToDoItem() {
-    var itemText = toDoEntryBox.value;
+  var itemText = toDoEntryBox.value.trim();
+  if (itemText !== "") {
     newToDoItem(itemText, false);
+    toDoEntryBox.value = "";
+    saveList();
+  }
 }
 
 function toggleToDoItemState() {
-    if (this.classList.contains("completed")) {
-        this.classList.remove("completed");
-    } else {
-        this.classList.add("completed");
-    }
+  this.classList.toggle("completed");
+  saveList();
 }
 
 function clearCompletedToDoItems() {
-    var completedItems = toDoList.getElementsByClassName("completed");
-
-    while (completedItems.length > 0) {
-        completedItems.item(0).remove();
-    }
+  var completedItems = document.querySelectorAll("#todo-list .completed");
+  completedItems.forEach(item => item.remove());
+  saveList();
 }
 
 function emptyList() {
-    var toDoItems = toDoList.children;
-    while (toDoItems.length > 0) {
-        toDoItems.item(0).remove();
-    }
+  toDoList.innerHTML = "";
+  saveList();
 }
 
-var myArray = [];
-myArray.push("something to store");
-myArray.push("something else to store");
-alert(myArray[0]);
-//This will alert "something to store"
-
-var toDoInfo = {
-    "task": "Thing I need to do",
-    "completed": false
-};
-
 function saveList() {
-    var toDos = [];
-
-    for (var i = 0; i < toDoList.children.length; i++) {
-        var toDo = toDoList.children.item(i);
-
-        var toDoInfo = {
-            "task": toDo.innerText,
-            "completed": toDo.classList.contains("completed")
-        };
-
-        toDos.push(toDoInfo);
-
-    }
-
-    localStorage.setItem("toDos", JSON.stringify(toDos));
-    console.log("masuk kesini yaa!")
+  var toDos = [];
+  for (var i = 0; i < toDoList.children.length; i++) {
+    var toDo = toDoList.children.item(i);
+    toDos.push({
+      task: toDo.childNodes[0].textContent,
+      completed: toDo.classList.contains("completed")
+    });
+  }
+  localStorage.setItem("toDos", JSON.stringify(toDos));
 }
 
 function loadList() {
-    if (localStorage.getItem("toDos") != null) {
-        var toDos = JSON.parse(localStorage.getItem("toDos"));
-
-        for (var i = 0; i < toDos.length; i++) {
-            var toDo = toDos[i];
-            newToDoItem(toDo.task, toDo.completed);
-        }
-    }
+  var saved = localStorage.getItem("toDos");
+  if (saved) {
+    var toDos = JSON.parse(saved);
+    toDos.forEach(t => newToDoItem(t.task, t.completed));
+  }
 }
-
 loadList();
+
+// Efek petasan klik putih di kursor
+function createClickSpark(e) {
+  var spark = document.createElement("span");
+  spark.className = "click-spark";
+  spark.style.left = e.pageX + "px";
+  spark.style.top = e.pageY + "px";
+  document.body.appendChild(spark);
+  setTimeout(() => spark.remove(), 500);
+}
